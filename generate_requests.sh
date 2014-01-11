@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export RUNDIR=~/openmodeller-swift
-
 while read especie; do
 	echo "#####################
 ### Input section ###
@@ -45,9 +43,9 @@ Occurrences group = $especie
 # wcs>wcs url>wcs layer
 # To specify a categorical map use: Categorical map = 
 #
-Map = $RUNDIR/workshop/Brasil_ASC/alt.asc
-Map = $RUNDIR/workshop/Brasil_ASC/bio1.asc
-Map = $RUNDIR/workshop/Brasil_ASC/bio12.asc
+Map = workshop/Brasil_ASC/alt.asc
+Map = workshop/Brasil_ASC/bio1.asc
+Map = workshop/Brasil_ASC/bio12.asc
 
 # Mask to delimit the region to be used to generate the model (filter
 # the species ocurrencies/absences points).
@@ -55,7 +53,7 @@ Map = $RUNDIR/workshop/Brasil_ASC/bio12.asc
 # areas will be those with nodata (areas with zero as data will not 
 # be masked at all).
 #
-Mask = $RUNDIR/workshop/Brasil_ASC/bio12.asc
+Mask = workshop/Brasil_ASC/bio12.asc
 
 # Uncomment the following lines to disable model statistics.
 #
@@ -67,14 +65,14 @@ Mask = $RUNDIR/workshop/Brasil_ASC/bio12.asc
 
 # File to be used as the output format.
 #
-Output format = $RUNDIR/workshop/Brasil_ASC/bio12.asc
+Output format = workshop/Brasil_ASC/bio12.asc
 
 # Maps to be used as environmental variables to project the model
 # to create the output distribution map.
 # To specify a categorical map use: Categorical output map = 
-Output map = $RUNDIR/workshop/Brasil_ASC/alt.asc
-Output map = $RUNDIR/workshop/Brasil_ASC/bio1.asc
-Output map = $RUNDIR/workshop/Brasil_ASC/bio12.asc
+Output map = workshop/Brasil_ASC/alt.asc
+Output map = workshop/Brasil_ASC/bio1.asc
+Output map = workshop/Brasil_ASC/bio12.asc
 
 
 # Mask to delimit the region to project the model onto.
@@ -82,17 +80,17 @@ Output map = $RUNDIR/workshop/Brasil_ASC/bio12.asc
 # areas will be those with nodata (areas with zero as data will not 
 # be masked at all).
 #
-Output mask = $RUNDIR/workshop/Brasil_ASC/bio12.asc
+Output mask = workshop/Brasil_ASC/bio12.asc
 
 # Output model name (serialized model).
 #
-Output model = $RUNDIR/output_$especie.xml
+Output model = output_$especie.xml
 
 # Output file name (projected map).
 # Make sure to use the correct extension as shown in the Output file type
 # documentation shown below!
 #
-Output file = $RUNDIR/output_$especie.img
+Output file = output_$especie.img
 
 # Output file type. Options:
 #
