@@ -1,0 +1,24 @@
+<config>
+  <pool handle="buriti.lncc.br-localhost" sysinfo="INTEL32::LINUX">
+    <gridftp url="local://localhost" />
+    <execution provider="local" url="none" />
+    <workdirectory>/var/tmp/gmgall/swiftwork</workdirectory>
+    <!-- <profile namespace="karajan" key="maxSubmitRate">1</profile> -->
+    <profile namespace="karajan" key="jobThrottle">0.23</profile>
+    <profile namespace="karajan" key="initialScore">10000</profile>
+    <profile namespace="swift"   key="stagingMethod">file</profile>
+  </pool>
+
+
+<!--  <pool handle="cipher.lncc.br-sge-local">
+    <gridftp url="local://localhost" />
+    <execution jobmanager="local:sge" provider="coaster" url="none" slots="8" workersPerNode="1"/> 
+    <profile namespace="globus" key="pe">mpi8</profile> 
+    <profile namespace="globus" key="queue">linux.q</profile>
+    <profile key="jobThrottle" namespace="karajan">6.23</profile>
+    <profile namespace="karajan" key="initialScore">10000</profile>
+    <filesystem provider="local" url="none" />
+    <workdirectory>/prj/prjssi/lgadelha/swiftwork</workdirectory> 
+  </pool> -->
+</config>
+
