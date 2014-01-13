@@ -13,7 +13,7 @@ type modeling_results {
 ### Mapeando variáveis ao fs
 request_file requests[] <ext;exec="species_mapper.sh",o=@filename(occurrences)>;
 environment_layers env_layers[] <filesys_mapper;location="workshop/Brasil_ASC/", suffix=".asc">;
-occurrences_file occurrences <single_file_mapper;file="./teste.txt">;
+occurrences_file occurrences <single_file_mapper;file="teste.txt">;
 modeling_results results[] <ext;exec="modeling_results_mapper.sh",o=@filename(occurrences)>;
 
 ### Definição das apps
@@ -21,7 +21,7 @@ app (request_file out[]) generate_requests(occurrences_file i) {
 	generate_requests @filename(i);
 }
 
-app (modeling_results out) do_modeling(request_file r, environment_layers e[]) {
+app (modeling_results out) do_modeling(request_file r, environment_layers e[], occurrences_file o) {
 	om_console @filename(r);
 }
 
@@ -29,6 +29,5 @@ app (modeling_results out) do_modeling(request_file r, environment_layers e[]) {
 requests = generate_requests(occurrences);
 
 foreach request,index in requests {
-  results[index] = do_modeling(request, env_layers);
-	trace(requests[index]);
+  results[index] = do_modeling(request, env_layers, occurrences);
 }
