@@ -213,42 +213,42 @@ Output file type = GreyBMP
 ########
 # SVM
 #
-Algorithm = SVM
-Parameter = SvmType 0
-Parameter = KernelType 2
-Parameter = Degree 3
-Parameter = Gamma 0
-Parameter = C 1
-Parameter = Coef0 0
-Parameter = Nu 0.5
-Parameter = ProbabilisticOutput 0
-Parameter = NumberOfPseudoAbsences 500
+#Algorithm = SVM
+#Parameter = SvmType 0
+#Parameter = KernelType 2
+#Parameter = Degree 3
+#Parameter = Gamma 0
+#Parameter = C 1
+#Parameter = Coef0 0
+#Parameter = Nu 0.5
+#Parameter = ProbabilisticOutput 0
+#Parameter = NumberOfPseudoAbsences 500
 
 ########
 # Maximum Entropy
 #
-#Algorithm = MAXENT
-#Parameter = NumberOfBackgroundPoints 10000
-#Parameter = UseAbsencesAsBackground 0
-#Parameter = IncludePresencePointsInBackground 1
-#Parameter = NumberOfIterations 500
-#Parameter = TerminateTolerance 0.00001
+Algorithm = MAXENT
+Parameter = NumberOfBackgroundPoints 10000
+Parameter = UseAbsencesAsBackground 0
+Parameter = IncludePresencePointsInBackground 1
+Parameter = NumberOfIterations 500
+Parameter = TerminateTolerance 0.00001
 # Valid values for the parameter Output Format:
 # 1 = Raw, 2 = Logistic.
-#Parameter = OutputFormat 2
+Parameter = OutputFormat 2
 # Valid values: enable = 1, disable = 0
-#Parameter = QuadraticFeatures 1
+Parameter = QuadraticFeatures 1
 # Valid values: enable = 1, disable = 0
-#Parameter = ProductFeatures 1
+Parameter = ProductFeatures 1
 # Valid values: enable = 1, disable = 0
-#Parameter = HingeFeatures 1
+Parameter = HingeFeatures 1
 # Valid values: enable = 1, disable = 0
-#Parameter = ThresholdFeatures 1
+Parameter = ThresholdFeatures 1
 # Valid values: enable = 1, disable = 0
-#Parameter = AutoFeatures 1
-#Parameter = MinSamplesForProductThreshold 80
-#Parameter = MinSamplesForQuadratic 10
-#Parameter = MinSamplesForHinge 15
+Parameter = AutoFeatures 1
+Parameter = MinSamplesForProductThreshold 80
+Parameter = MinSamplesForQuadratic 10
+Parameter = MinSamplesForHinge 15
 
 ########
 # Artificial Neural Networks

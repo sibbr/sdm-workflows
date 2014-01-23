@@ -19,10 +19,6 @@ buriti.lncc.br-localhost 	cp 		/bin/cp         INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost 	touch 		/bin/touch      INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost	wc		/usr/bin/wc	INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost	sleep		/bin/sleep	null	null 	null
-buriti.lncc.br-localhost	blastall	/usr/local/blast-2.2.26/bin/blastall		null		null		null
-buriti.lncc.br-localhost	fastasplitn	/home/gmgall/parallelblast/fastasplitn	null		null	null
-buriti.lncc.br-localhost	blastmerge	/home/gmgall/parallelblast/blastmerge	null		null	null
-buriti.lncc.br-localhost	formatdb	/usr/local/blast-2.2.26/bin/formatdb							null		null	null
 buriti.lncc.br-localhost	generate_requests	/home/gmgall/workflow-openmodeller/generate_requests.sh				null		null	null
 buriti.lncc.br-localhost	om_console	/usr/local/openmodeller-svn/bin/om_console				null		null	null
 
