@@ -19,7 +19,7 @@ buriti.lncc.br-localhost 	cp 		/bin/cp         INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost 	touch 		/bin/touch      INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost	wc		/usr/bin/wc	INSTALLED	INTEL32::LINUX	null
 buriti.lncc.br-localhost	sleep		/bin/sleep	null	null 	null
-buriti.lncc.br-localhost	generate_requests	/home/gmgall/workflow-openmodeller/generate_requests.sh				null		null	null
+buriti.lncc.br-localhost	generate_requests	/home/gmgall/openmodeller-swift/generate_requests.sh				null		null	null
 buriti.lncc.br-localhost	om_console	/usr/local/openmodeller-svn/bin/om_console				null		null	null
 
 
