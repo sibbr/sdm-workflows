@@ -1,7 +1,8 @@
 #!/bin/bash
 
 while read especie; do
-	echo "#####################
+    especie_fname=$(echo "$especie" | sed "s/ /\_/")
+    echo "#####################
 ### Input section ###
 
 # Coordinate system and projection in WKT format.
@@ -21,7 +22,7 @@ WKT Coord System = GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 2
 #    speciesLink TAPIR service:
 #    http://tapir.cria.org.br/tapirlink/tapir.php/specieslink
 # 
-Occurrences source = teste.txt
+Occurrences source = $1 
 
 # Only occurrences with this label (group id) will be used.
 # Defaults to the last label found.
@@ -84,13 +85,13 @@ Output mask = workshop/Brasil_ASC/bio12.asc
 
 # Output model name (serialized model).
 #
-Output model = output_$especie.xml
+Output model = output_$especie_fname.xml
 
 # Output file name (projected map).
 # Make sure to use the correct extension as shown in the Output file type
 # documentation shown below!
 #
-Output file = output_$especie.img
+Output file = output_$especie_fname.img
 
 # Output file type. Options:
 #
@@ -290,5 +291,5 @@ Parameter = MinSamplesForHinge 15
 #Algorithm = RF
 #Parameter = NumTrees 10
 #Parameter = VarsPerTree 0
-#Parameter = ForceUnsupervisedLearning 0" > "request_$especie.txt"
+#Parameter = ForceUnsupervisedLearning 0" > "request_$especie_fname.txt"
 done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$1" | sort | uniq)

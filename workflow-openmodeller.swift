@@ -1,4 +1,4 @@
-### Definição de tipos
+### Type definitions
 type request_file;
 type environment_layers;
 type occurrences_file;
@@ -10,23 +10,23 @@ type modeling_results {
 	projected_map map;
 }
 
-### Mapeando variáveis ao fs
-request_file requests[] <ext;exec="species_mapper.sh",o=@filename(occurrences)>;
+### Mapper declarations
+request_file requests[] <ext;exec="species_mapper.sh",o=filename(occurrences)>;
 environment_layers env_layers[] <filesys_mapper;location="workshop/Brasil_ASC/", suffix=".asc">;
-# Recebe o path do arquivo de ocorrências pelo parâmetro -o
-occurrences_file occurrences <single_file_mapper;file=@arg("o")>;
-modeling_results results[] <ext;exec="modeling_results_mapper.sh",o=@filename(occurrences)>;
+# Receives the path to the occurrences file through the -o parameter
+occurrences_file occurrences <single_file_mapper;file=arg("o")>;
+modeling_results results[] <ext;exec="modeling_results_mapper.sh",o=filename(occurrences)>;
 
-### Definição das apps
+### App definitions
 app (request_file out[]) generate_requests(occurrences_file i) {
-	generate_requests @filename(i);
+	generate_requests filename(i);
 }
 
 app (modeling_results out) do_modeling(request_file r, environment_layers e[], occurrences_file o) {
-	om_console @filename(r);
+	om_console filename(r);
 }
 
-### Início do script
+### 
 requests = generate_requests(occurrences);
 
 foreach request,index in requests {
