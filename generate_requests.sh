@@ -1,5 +1,8 @@
 #!/bin/bash
 
+occurrences_file=$1
+min_occurrences=$2
+
 while read especie; do
     especie_fname=$(echo "$especie" | sed "s/ /\_/")
     echo "#####################
@@ -22,7 +25,7 @@ WKT Coord System = GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 2
 #    speciesLink TAPIR service:
 #    http://tapir.cria.org.br/tapirlink/tapir.php/specieslink
 # 
-Occurrences source = $1 
+Occurrences source = $occurrences_file 
 
 # Only occurrences with this label (group id) will be used.
 # Defaults to the last label found.
@@ -292,4 +295,8 @@ Parameter = MinSamplesForHinge 15
 #Parameter = NumTrees 10
 #Parameter = VarsPerTree 0
 #Parameter = ForceUnsupervisedLearning 0" > "request_$especie_fname.txt"
-done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$1" | sort | uniq)
+done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$occurrences_file" | \
+    sort | \
+    uniq -c | \
+    awk -v min_occ=$min_occurrences '{ if ($1 > min_occ) print $2 " " $3 }' 
+)
