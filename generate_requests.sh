@@ -1,7 +1,10 @@
 #!/bin/bash
 
-occurrences_file=$1
-min_occurrences=$2
+occurrences_file="$1"
+min_occurrences="$2"
+
+test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
+echo "$min_occurrences" | grep '^[0-9]\{1,\}$' >/dev/null || { echo "inform a minimum number of occurrences" 1>&2; exit 1; }
 
 while read especie; do
     especie_fname=$(echo "$especie" | sed "s/ /\_/")
@@ -298,5 +301,5 @@ Parameter = MinSamplesForHinge 15
 done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$occurrences_file" | \
     sort | \
     uniq -c | \
-    awk -v min_occ=$min_occurrences '{ if ($1 > min_occ) print $2 " " $3 }' 
+    awk -v "min_occ=$min_occurrences" '{ if ($1 > min_occ) print $2 " " $3 }' 
 )
