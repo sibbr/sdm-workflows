@@ -2,8 +2,14 @@
 
 occurrences_file="$1"
 min_occurrences="$2"
+mask_file="$3"
+output_format_file="$4"
+output_mask_file="$5"
 
 test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
+test -r "$mask_file" || { echo "$mask_file not found" 1>&2; exit 1; }
+test -r "$output_format_file" || { echo "$output_format_file not found" 1>&2; exit 1; }
+test -r "$output_mask_file" || { echo "$output_mask_file not found" 1>&2; exit 1; }
 echo "$min_occurrences" | grep '^[0-9]\{1,\}$' >/dev/null || { echo "inform a minimum number of occurrences" 1>&2; exit 1; }
 
 while read especie; do
@@ -60,7 +66,7 @@ Map = workshop/Brasil_ASC/bio12.asc
 # areas will be those with nodata (areas with zero as data will not 
 # be masked at all).
 #
-Mask = workshop/Brasil_ASC/bio12.asc
+Mask = $mask_file
 
 # Uncomment the following lines to disable model statistics.
 #
@@ -72,7 +78,7 @@ Mask = workshop/Brasil_ASC/bio12.asc
 
 # File to be used as the output format.
 #
-Output format = workshop/Brasil_ASC/bio12.asc
+Output format = $output_format_file
 
 # Maps to be used as environmental variables to project the model
 # to create the output distribution map.
@@ -87,7 +93,7 @@ Output map = workshop/Brasil_ASC/bio12.asc
 # areas will be those with nodata (areas with zero as data will not 
 # be masked at all).
 #
-Output mask = workshop/Brasil_ASC/bio12.asc
+Output mask = $output_mask_file
 
 # Output model name (serialized model).
 #
