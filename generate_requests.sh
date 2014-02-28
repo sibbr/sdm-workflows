@@ -5,12 +5,16 @@ min_occurrences="$2"
 mask_file="$3"
 output_format_file="$4"
 output_mask_file="$5"
+map_list="$6"
+output_map_list="$7"
 
 test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
 test -r "$mask_file" || { echo "$mask_file not found" 1>&2; exit 1; }
 test -r "$output_format_file" || { echo "$output_format_file not found" 1>&2; exit 1; }
 test -r "$output_mask_file" || { echo "$output_mask_file not found" 1>&2; exit 1; }
 echo "$min_occurrences" | grep '^[0-9]\{1,\}$' >/dev/null || { echo "inform a minimum number of occurrences" 1>&2; exit 1; }
+#TODO checagem para map_list
+#TODO checagem para output_map_list
 
 while read especie; do
     especie_fname=$(echo "$especie" | sed "s/ /\_/")
@@ -56,9 +60,7 @@ Occurrences group = $especie
 # wcs>wcs url>wcs layer
 # To specify a categorical map use: Categorical map = 
 #
-Map = workshop/Brasil_ASC/alt.asc
-Map = workshop/Brasil_ASC/bio1.asc
-Map = workshop/Brasil_ASC/bio12.asc
+$(sed 's/,/\n/g' <<< "$map_list" | sed 's/^/Map = /g')
 
 # Mask to delimit the region to be used to generate the model (filter
 # the species ocurrencies/absences points).
@@ -83,10 +85,7 @@ Output format = $output_format_file
 # Maps to be used as environmental variables to project the model
 # to create the output distribution map.
 # To specify a categorical map use: Categorical output map = 
-Output map = workshop/Brasil_ASC/alt.asc
-Output map = workshop/Brasil_ASC/bio1.asc
-Output map = workshop/Brasil_ASC/bio12.asc
-
+$(sed 's/,/\n/g' <<< "$output_map_list" | sed 's/^/Output map = /g')
 
 # Mask to delimit the region to project the model onto.
 # Note: Mask layers need to support nodata value assignment. Masked
