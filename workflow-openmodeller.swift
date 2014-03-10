@@ -30,7 +30,13 @@ modeling_results results[] <ext;exec="modeling_results_mapper.sh",i=filename(occ
 
 ### App definitions
 app (request_file out[]) generate_requests(occurrences_file i, string m, mask_file mf, output_format_file off, output_mask_file omf, map maps[], output_map omaps[]) {
-	generate_requests filename(i) m filename(mf) filename(off) filename(omf) strjoin(filenames(maps), ",") strjoin(filenames(omaps), ",");
+	generate_requests "-o" filename(i) 
+		"--min_occurrences" m 
+		"-m" filename(mf) 
+		"--output_format_file" filename(off)
+		"--output_mask_file" filename(omf)
+		"--map_list" strjoin(filenames(maps), ",")
+		"--output_map_list" strjoin(filenames(omaps), ",");
 }
 
 app (modeling_results out) do_modeling(request_file r, environment_layers e[], occurrences_file o) {

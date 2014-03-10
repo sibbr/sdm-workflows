@@ -1,21 +1,101 @@
 #!/bin/bash
 
-occurrences_file="$1"
-min_occurrences="$2"
-mask_file="$3"
-output_format_file="$4"
-output_mask_file="$5"
-map_list="$6"
-output_map_list="$7"
+HELP_MSG="
+Usage: $(basename "$0") OPTIONS
 
-test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
-test -r "$mask_file" || { echo "$mask_file not found" 1>&2; exit 1; }
-test -r "$output_format_file" || { echo "$output_format_file not found" 1>&2; exit 1; }
-test -r "$output_mask_file" || { echo "$output_mask_file not found" 1>&2; exit 1; }
-echo "$min_occurrences" | grep '^[0-9]\{1,\}$' >/dev/null || { echo "inform a minimum number of occurrences" 1>&2; exit 1; }
-#TODO checagem para map_list
-#TODO checagem para output_map_list
+OPTIONS:
+	-h, --help		This message.
+	-o, --occurrences_file	Occurrences file.
+	--min_occurrences	Only species with this number of occurrences or more will be modeled.
+	-m, --mask_file		Mask to delimit the region to be used to generate the model (filter the species ocurrencies/absences points).
+	--output_format_file	File to be used as the output format.
+	--output_mask_file	Mask to delimit the region to project the model onto.
+	--map_list		Maps to be used as environmental variables to generate the model.
+				Multiple filenames should be passed separeted by commas. Example:
+				--map_list=\"path/to/file1,path/to/file2,path/to/file3\"
+	--output_map_list	Maps to be used as environmental variables to project the model to create the output distribution map.
+				Multiple filenames should be passed separeted by commas. Example:
+				--output_map_list=\"path/to/file1,path/to/file2,path/to/file3\"
+	
+"
 
+# Processing command line options
+while test -n "$1"; do
+	case "$1" in
+		-h | --help)
+			echo "$HELP_MSG"
+			exit 0
+		;;
+
+		-o | --occurrences_file)
+			shift
+			occurrences_file="$1"
+			test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
+		;;
+
+		-m | --mask_file)
+			shift
+			mask_file="$1"
+			test -r "$mask_file" || { echo "$mask_file not found" 1>&2; exit 1; }
+		;;
+
+		--min_occurrences)
+			shift
+			min_occurrences="$1"
+			echo "$min_occurrences" | grep '^[0-9]\{1,\}$' >/dev/null || { echo "Inform a minimum number of occurrences" 1>&2; exit 1; }
+		;;
+
+		--output_format_file)
+			shift
+			output_format_file="$1"
+			test -r "$output_format_file" || { echo "$output_format_file not found" 1>&2; exit 1; }
+		;;
+
+		--output_mask_file)
+			shift
+			output_mask_file="$1"
+			test -r "$output_mask_file" || { echo "$output_mask_file not found" 1>&2; exit 1; }
+		;;
+
+		--map_list)
+			shift
+			map_list="$1"
+			# Checking if maps exist
+			for map in $(sed 's/,/ /g' <<< "$map_list"); do
+				test -r "$map" || { echo "$map not found" 1>&2; exit 1; }
+			done
+		;;
+
+		--output_map_list)
+			shift
+			output_map_list="$1"
+			# Checking if output maps exist
+			for output_map in $(sed 's/,/ /g' <<< "$output_map_list"); do
+				test -r "$output_map" || { echo "$output_map not found" 1>&2; exit 1; }
+			done
+		;;
+
+		*)
+			echo "Unknown option: $1" 1>&2
+			exit 1
+		;;
+
+	esac
+	
+	# Option $1 processed, continuing with next option
+	shift
+done
+
+# Checking if all options were provided
+[ "$occurrences_file" ] ||	{ echo "Inform a occurrences file" 1>&2; exit 1; }
+[ "$min_occurrences" ] ||	{ echo "Inform a minimum number of occurrences" 1>&2; exit 1; }
+[ "$mask_file" ] ||		{ echo "Inform a mask file" 1>&2; exit 1; }
+[ "$output_format_file" ] ||	{ echo "Inform a output format file" 1>&2; exit 1; }
+[ "$output_mask_file" ] ||	{ echo "Inform a output mask file" 1>&2; exit 1; }
+[ "$map_list" ] ||		{ echo "Inform a map list" 1>&2; exit 1; }
+[ "$output_map_list" ] ||	{ echo "Inform a output mask list" 1>&2; exit 1; }
+
+# Generating requests files
 while read especie; do
     especie_fname=$(echo "$especie" | sed "s/ /\_/")
     echo "#####################
