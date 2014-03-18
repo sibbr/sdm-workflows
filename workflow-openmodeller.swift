@@ -21,12 +21,12 @@ mask_file mask <single_file_mapper;file=arg("mask-file")>;
 output_format_file output_format <single_file_mapper;file=arg("output-format")>;
 output_mask_file output_mask <single_file_mapper;file=arg("output-mask")>;
 string min_occ=arg("min-occ", "10");
-request_file requests[] <ext;exec="species_mapper.sh",i=filename(occurrences), min=min_occ>;
+request_file requests[] <ext;exec="species_mapper.sh",i=filename(occurrences), m=min_occ>;
 environment_layers env_layers[] <filesys_mapper;location="workshop/Brasil_ASC/", suffix=".asc">;
 map maps_env[] <fixed_array_mapper; files=arg("maps")>;
 output_map output_maps[] <fixed_array_mapper; files=arg("output-maps")>;
 # Receives the path to the occurrences file through the -o parameter
-modeling_results results[] <ext;exec="modeling_results_mapper.sh",i=filename(occurrences), min=min_occ>;
+modeling_results results[] <ext;exec="modeling_results_mapper.sh",i=filename(occurrences), m=min_occ>;
 
 ### App definitions
 app (request_file out[]) generate_requests(occurrences_file i, string m, mask_file mf, output_format_file off, output_mask_file omf, map maps[], output_map omaps[]) {

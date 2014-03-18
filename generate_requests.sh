@@ -1,4 +1,9 @@
 #!/bin/bash
+# generate_requests.sh - Generate the request files from each species in a
+# occurrences file.
+#
+# More about request files:
+# http://openmodeller.sourceforge.net/man1/om_console.1.html
 
 HELP_MSG="
 Usage: $(basename "$0") OPTIONS
@@ -30,13 +35,13 @@ while test -n "$1"; do
 		-o | --occurrences_file)
 			shift
 			occurrences_file="$1"
-			test -r "$occurrences_file" || { echo "$occurrences_file file not found" 1>&2; exit 1; }
+			[ -r "$occurrences_file" ] || { echo "$occurrences_file file not found" 1>&2; exit 1; }
 		;;
 
 		-m | --mask_file)
 			shift
 			mask_file="$1"
-			test -r "$mask_file" || { echo "$mask_file not found" 1>&2; exit 1; }
+			[ -r "$mask_file" ] || { echo "$mask_file not found" 1>&2; exit 1; }
 		;;
 
 		--min_occurrences)
@@ -48,13 +53,13 @@ while test -n "$1"; do
 		--output_format_file)
 			shift
 			output_format_file="$1"
-			test -r "$output_format_file" || { echo "$output_format_file not found" 1>&2; exit 1; }
+			[ -r "$output_format_file" ] || { echo "$output_format_file not found" 1>&2; exit 1; }
 		;;
 
 		--output_mask_file)
 			shift
 			output_mask_file="$1"
-			test -r "$output_mask_file" || { echo "$output_mask_file not found" 1>&2; exit 1; }
+			[ -r "$output_mask_file" ] || { echo "$output_mask_file not found" 1>&2; exit 1; }
 		;;
 
 		--map_list)
@@ -62,7 +67,7 @@ while test -n "$1"; do
 			map_list="$1"
 			# Checking if maps exist
 			for map in $(sed 's/,/ /g' <<< "$map_list"); do
-				test -r "$map" || { echo "$map not found" 1>&2; exit 1; }
+				[ -r "$map" ] || { echo "$map not found" 1>&2; exit 1; }
 			done
 		;;
 
@@ -71,7 +76,7 @@ while test -n "$1"; do
 			output_map_list="$1"
 			# Checking if output maps exist
 			for output_map in $(sed 's/,/ /g' <<< "$output_map_list"); do
-				test -r "$output_map" || { echo "$output_map not found" 1>&2; exit 1; }
+				[ -r "$output_map" ] || { echo "$output_map not found" 1>&2; exit 1; }
 			done
 		;;
 
@@ -87,18 +92,18 @@ while test -n "$1"; do
 done
 
 # Checking if all options were provided
-[ "$occurrences_file" ] ||	{ echo "Inform a occurrences file" 1>&2; exit 1; }
-[ "$min_occurrences" ] ||	{ echo "Inform a minimum number of occurrences" 1>&2; exit 1; }
-[ "$mask_file" ] ||		{ echo "Inform a mask file" 1>&2; exit 1; }
-[ "$output_format_file" ] ||	{ echo "Inform a output format file" 1>&2; exit 1; }
-[ "$output_mask_file" ] ||	{ echo "Inform a output mask file" 1>&2; exit 1; }
-[ "$map_list" ] ||		{ echo "Inform a map list" 1>&2; exit 1; }
-[ "$output_map_list" ] ||	{ echo "Inform a output mask list" 1>&2; exit 1; }
+[ "$occurrences_file" ]		|| { echo "Inform a occurrences file" 1>&2; exit 1; }
+[ "$min_occurrences" ]		|| { echo "Inform a minimum number of occurrences" 1>&2; exit 1; }
+[ "$mask_file" ]			|| { echo "Inform a mask file" 1>&2; exit 1; }
+[ "$output_format_file" ]	|| { echo "Inform a output format file" 1>&2; exit 1; }
+[ "$output_mask_file" ]		|| { echo "Inform a output mask file" 1>&2; exit 1; }
+[ "$map_list" ]				|| { echo "Inform a map list" 1>&2; exit 1; }
+[ "$output_map_list" ]		|| { echo "Inform a output mask list" 1>&2; exit 1; }
 
 # Generating requests files
-while read especie; do
-    especie_fname=$(echo "$especie" | sed "s/ /\_/")
-    echo "#####################
+while read species; do
+	species_fname=$(echo "$species" | sed "s/ /\_/")
+	echo "#####################
 ### Input section ###
 
 # Coordinate system and projection in WKT format.
@@ -123,7 +128,7 @@ Occurrences source = $occurrences_file
 # Only occurrences with this label (group id) will be used.
 # Defaults to the last label found.
 #
-Occurrences group = $especie
+Occurrences group = $species
 
 # Uncomment the following line to automatically ignore duplicate points (same coordinates).
 #
@@ -176,13 +181,13 @@ Output mask = $output_mask_file
 
 # Output model name (serialized model).
 #
-Output model = output_$especie_fname.xml
+Output model = output_$species_fname.xml
 
 # Output file name (projected map).
 # Make sure to use the correct extension as shown in the Output file type
 # documentation shown below!
 #
-Output file = output_$especie_fname.img
+Output file = output_$species_fname.img
 
 # Output file type. Options:
 #
@@ -382,9 +387,9 @@ Parameter = MinSamplesForHinge 15
 #Algorithm = RF
 #Parameter = NumTrees 10
 #Parameter = VarsPerTree 0
-#Parameter = ForceUnsupervisedLearning 0" > "request_$especie_fname.txt"
-done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$occurrences_file" | \
-    sort | \
-    uniq -c | \
-    awk -v "min_occ=$min_occurrences" '{ if ($1 > min_occ) print $2 " " $3 }' 
+#Parameter = ForceUnsupervisedLearning 0" > "request_$species_fname.txt"
+done < <(awk -F'\t' '/^[0-9]/ { print $2 }' "$occurrences_file" |
+	sort |
+	uniq -c |
+	awk -v "min_occ=$min_occurrences" '{ if ($1 > min_occ) print $2 " " $3 }' 
 )
